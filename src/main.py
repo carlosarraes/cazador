@@ -1,14 +1,33 @@
-from factories.get_db import get_database
 import uvicorn
 from fastapi import Depends, FastAPI
-from pymongo.database import Database
+
+import services
+import models
+from factories.listing import get_listing_service
 
 app = FastAPI()
 
 
+@app.get("/")
+def get_all(
+    services: services.Listing = Depends(get_listing_service),
+) -> list[models.Listing]:
+    return services.get_all()
+
+
 @app.post("/update")
-def test_db(db: Database = Depends(get_database)) -> dict[str, str]:
-    return {"message": "Hello World"}
+def update(
+    services: services.Listing = Depends(get_listing_service),
+) -> None:
+    return services.update()
+
+
+@app.get("/debug")
+def debug(
+    services: services.Listing = Depends(get_listing_service),
+) -> dict[str, str]:
+    services.debug()
+    return {"status": "ok"}
 
 
 if __name__ == "__main__":
