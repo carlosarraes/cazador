@@ -3,10 +3,7 @@ import json
 from bs4 import BeautifulSoup, Tag, NavigableString
 import cloudscraper
 
-from src.models.listing import Listing
-
-
-ZAP_URL = "https://www.zapimoveis.com.br/venda/apartamentos/sc+palhoca++pedra-branca/?__ab=exp-aa-test:B,rec-cta:control&transacao=venda&onde=,Santa%20Catarina,Palho%C3%A7a,,Pedra%20Branca,,,neighborhood,BR%3ESanta%20Catarina%3ENULL%3EPalhoca%3EBarrios%3EPedra%20Branca,-27.662428,-48.661448,&tipos=apartamento_residencial&pagina=1&quartos=3,4&precoMaximo=600000"
+from models.listing import Listing
 
 
 class ZapScraper:
@@ -20,10 +17,15 @@ class ZapScraper:
         return BeautifulSoup(res.text, "html.parser")
 
     @staticmethod
-    def _process_listing(listing: Any) -> dict[str, Any]:
-        a_tag = listing.select(
-            "a.result-card.result-card__highlight.result-card__highlight--default, a.result-card.result-card__highlight.result-card__highlight--standard"
-        )[0]
+    def _process_listing(listing: Any) -> dict[str, Any] | None:
+        a_tag = listing.select_one(
+            "a.result-card.result-card__highlight.result-card__highlight--default, "
+            "a.result-card.result-card__highlight.result-card__highlight--standard, "
+            "a.result-card.result-card__highlight.result-card__highlight--super, "
+            "a.result-card.result-card__highlight.result-card__highlight--premium"
+        )
+        if not a_tag:
+            return
 
         location_element = listing.find("h2", class_="card__address")
         location = location_element.get("title", "N/A") if location_element else "N/A"
@@ -98,6 +100,8 @@ class ZapScraper:
         ids = self._get_ids(json.loads(id_support.text)["itemListElement"])
 
         processed_listing = [self._process_listing(listing) for listing in listings]
-        listings = [Listing.from_web(listing, ids) for listing in processed_listing]
+        listings = [
+            Listing.from_web(listing, ids) for listing in processed_listing if listing
+        ]
 
         return listings + self._get_from_next_data(next_data)

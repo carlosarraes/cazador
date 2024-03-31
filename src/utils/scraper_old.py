@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import cloudscraper
 
-from models.listing import Listing
 
 ZAP_URL = "https://www.zapimoveis.com.br/venda/apartamentos/sc+palhoca++pedra-branca/?__ab=exp-aa-test:B,rec-cta:control&transacao=venda&onde=,Santa%20Catarina,Palho%C3%A7a,,Pedra%20Branca,,,neighborhood,BR%3ESanta%20Catarina%3ENULL%3EPalhoca%3EBarrios%3EPedra%20Branca,-27.662428,-48.661448,&tipos=apartamento_residencial&pagina=1&quartos=3,4&precoMaximo=600000"
 
@@ -75,8 +74,3 @@ if __name__ == "__main__":
             "bathrooms": amenities.get("Banheiros", "N/A"),
             "parking": amenities.get("Vagas", "N/A"),
         }
-
-        listing_class = Listing.from_web(data)
-
-        print(listing_class.model_dump())
-        print("----------------------------")
