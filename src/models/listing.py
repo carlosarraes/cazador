@@ -1,6 +1,6 @@
 from typing import Any, Self
 
-from models.db import MongoModel
+from adapters.db import MongoModel
 
 
 class Listing(MongoModel):
