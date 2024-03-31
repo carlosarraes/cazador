@@ -1,7 +1,7 @@
 from typing import Iterator
 from pymongo import MongoClient
 
-from models.db import MongoDatabase
+from adapters.db import MongoDatabase
 
 
 def get_database() -> Iterator[MongoDatabase]:
