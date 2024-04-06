@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  web:
+    image: yourusername/projectname:tag
+    environment:
+      ZAP_URL: "https://www.zapimoveis.com.br/venda/apartamentos/?__ab=exp-aa-test:B,rec-cta:control,webp-rlt:webp,rp-imob:control&transacao=venda&onde=,Santa Catarina,Palhoça,,Pedra Branca,,,neighborhood,BR>Santa Catarina>NULL>Palhoca>Barrios>Pedra Branca,-27.662428,-48.661448,&tipos=apartamento_residencial&pagina=1&quartos=3,4&precoMaximo=550000"
+    ports:
+      - "8000:8000"
+  mongo:
+    image: mongo:latest
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
