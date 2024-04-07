@@ -8,6 +8,16 @@ from factories.listing import get_listing_service
 app = FastAPI()
 
 
+@app.get("/healthz")
+def healthz() -> dict[str, str]:
+    return {"status": "ok"}
+
+
+@app.get("/readyz")
+def readyz() -> dict[str, str]:
+    return {"status": "ready"}
+
+
 @app.get("/")
 def get_all(
     services: services.Listing = Depends(get_listing_service),
