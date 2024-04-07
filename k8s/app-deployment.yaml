@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cazadorpy-deployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: cazadorpy
+  template:
+    metadata:
+      labels:
+        app: cazadorpy
+    spec:
+      containers:
+        - name: cazadorpy
+          image: carlosarraes/cazadorpy:0.1.5
+          ports:
+            - containerPort: 8000
+          env:
+            - name: ZAP_URL
+              value: "https://www.zapimoveis.com.br/venda/apartamentos/sc+palhoca++pedra-branca/?__ab=exp-aa-test:B,rec-cta:control&transacao=venda&onde=,Santa%20Catarina,Palho%C3%A7a,,Pedra%20Branca,,,neighborhood,BR%3ESanta%20Catarina%3ENULL%3EPalhoca%3EBarrios%3EPedra%20Branca,-27.662428,-48.661448,;,Santa%20Catarina,Palho%C3%A7a,,Pagani,,,neighborhood,BR%3ESanta%20Catarina%3ENULL%3EPalhoca%3EBarrios%3EPagani,-27.640739,-48.685468,&tipos=apartamento_residencial&pagina=1&quartos=3,4&precoMaximo=550000"
+            - name: DB_HOST
+              value: "mongo-clusterip"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
