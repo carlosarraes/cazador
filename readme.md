@@ -2,6 +2,8 @@
 
 Cazador é um projeto desenvolvido em Python que atua como um scraper de sites de imóveis. O objetivo principal é coletar informações relevantes de páginas de imóveis e salvá-las em um banco de dados MongoDB para futuras consultas ou análises. Este projeto é especialmente útil para quem busca automatizar a coleta de dados em sites imobiliários, proporcionando uma maneira eficiente de acessar informações atualizadas sobre imóveis disponíveis.
 
+https://github.com/carlosarraes/cazador/assets/106715016/ab758400-3e0a-4d54-8cec-4a996c690c75
+
 ## Funcionalidades
 
 - _Atualização do Banco de Dados_: Através do endpoint /update, é possível disparar o processo de scraping que coleta dados dos sites configurados e os salva no banco de dados MongoDB. Este processo pode ser automatizado ou executado manualmente conforme a necessidade.
@@ -10,9 +12,7 @@ Cazador é um projeto desenvolvido em Python que atua como um scraper de sites d
 
 ## Monitoramento com Grafana e Prometheus
 
-##### Clique na imagem para ver um video no youtube da aplicacão em execucão.
-
-[![Cazador](preview.png)](https://www.youtube.com/watch?v=mUHuRovX7bY)
+![Cazador](preview.png)
 
 Para garantir a saúde e o desempenho adequados da aplicação, o Cazador utiliza Grafana e Prometheus para monitoramento. Essas ferramentas permitem acompanhar métricas importantes da aplicação e do ambiente de execução, como uso de CPU, memória, número de requisições e tempo de resposta.
 
