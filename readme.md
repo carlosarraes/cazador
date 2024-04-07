@@ -55,8 +55,17 @@ Utilizar um pipeline Jenkins simplifica e automatiza o processo de entrega, gara
 
 ## Stress Test
 
-Para realizar um teste de estresse na aplicação e visualizar como ela se comporta sob carga, você pode utilizar a ferramenta Hey, seguindo o exemplo abaixo:
+Para avaliar a capacidade de sua aplicação sob condições de carga elevada, você tem duas opções para realizar o teste de estresse utilizando a ferramenta Hey.
+
+### Usando o script
+
+- Permissões de Execução `chmod +x stress_test.sh`
+- Execução do Script `./stress_test.sh [número de requisicões]`
+
+###### Este script verifica se as ferramentas necessárias (hey e minikube) estão instaladas e executa o teste de estresse no endpoint configurado.
+
+### Usando Hey diretamente
+
+Caso prefira, você pode também executar o comando hey diretamente no terminal, especificando o número de requisições desejadas e o endereço do serviço. Substitua <endereço-do-serviço-no-minikube> e <porta> pelos valores correspondentes ao serviço exposto pelo Minikube:
 
 `hey -n 1000 http://<endereço-do-serviço-no-minikube>:<porta>/`
-
-Substitua <endereço-do-serviço-no-minikube> e <porta> pelos valores correspondentes ao serviço exposto pelo Minikube.
