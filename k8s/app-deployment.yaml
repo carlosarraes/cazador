@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: cazadorpy
-          image: carlosarraes/cazadorpy:0.1.5
+          image: carlosarraes/cazadorpy:0.1.7
           ports:
             - containerPort: 8000
           env:
