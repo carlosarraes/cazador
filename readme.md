@@ -19,7 +19,7 @@ Para garantir a saúde e o desempenho adequados da aplicação, o Cazador utiliz
 - _Prometheus_: Configurado para coletar métricas da aplicação, especialmente focado nos endpoints /healthz e /readyz, que indicam, respectivamente, a saúde geral da aplicação e sua prontidão para receber tráfego.
 - _Grafana_: Integrado ao Prometheus, oferece dashboards visuais que facilitam o acompanhamento das métricas coletadas, permitindo uma visualização rápida e eficiente do estado da aplicação.
 
-## Requisitos
+## Dependências
 
 - Docker
 - Kubectl
@@ -30,18 +30,28 @@ Para garantir a saúde e o desempenho adequados da aplicação, o Cazador utiliz
 
 - Clone este repositório `git clone https://github.com/carlosarraes/cazadorpy.git`
 - Construa a imagen do docker `docker build -t carlosarraes/cazadorpy:latest .`
+- Inicialize o Minikube `minikube start`
 - Aplique as configuracões do k8s: `kubectl apply -f k8s/`
 - Utilize o endpoint /update: Após a aplicação dos arquivos de configuração do Kubernetes, o serviço estará pronto para uso. (Ache o ip com Minikube ip, o endpoint estará exposto n porta 30007)
-- Vá no Grafana, adicione prometheus como data source (http://prometheus:9090), crie uma dashboard, e uma das configuracões que coloquei manualmente no python foi um middleware de count
+- Vá no Grafana `minikube service grafana --url`, adicione prometheus como data source `http://prometheus:9090`, crie uma dashboard, e uma das configuracões que coloquei manualmente no python foi um middleware de count
 
 ## Próximos passos
 
-- Implementar a coleta de todas as páginas com base na entrada inicial (quantidade de imóveis encontrados).
-- No momento, as 4 replicas estão batendo no mesmo endpoint, colocar para o controle do endpoint dizer qual bairro, dessa forma tem como "direcionar" qual bairro o endpoint ser chamado, evitando as replicas baterem na mesma pagina.
-- Aprimorar o controle sobre a paginação dos resultados.
-- Aprimorar o controle sobre a faixa de preço dos imóveis.
-- Adicionar mais scrapers para diferentes sites de imóveis.
-- Desenvolver uma interface básica para visualização dos dados coletados.
+- Implementar a coleta de todas as páginas com base na quantidade inicial de imóveis encontrados.
+- Atualmente, as 4 réplicas consultam o mesmo endpoint. Planeja-se permitir que o controle do endpoint especifique o bairro, direcionando assim a busca de cada réplica para evitar sobreposições.
+- Aprimorar o controle sobre a paginação e a faixa de preço dos imóveis.
+- Expandir o número de scrapers para abranger diferentes sites de imóveis.
+- Desenvolver uma interface básica para facilitar a visualização dos dados.
+
+## Jenkins Pipeline
+
+Para automatizar o processo de entrega do projeto Cazador, utilizamos um pipeline Jenkins definido em um Jenkinsfile. Este pipeline abrange a construção da imagem Docker da aplicação, o deployment no Minikube e a atualização do serviço. Aqui está um resumo do processo:
+
+- _Construção da Imagem Docker_: A pipeline inicia construindo a imagem Docker da aplicação a partir do Dockerfile presente no repositório.
+- _Deployment no Kubernetes (Minikube)_: Após a construção da imagem, a pipeline aplica as configurações do Kubernetes, presentes no diretório k8s/, usando kubectl. Isso garante que a versão mais recente da aplicação seja implantada no Minikube.
+- _Jenkinsfile_: Inclua o arquivo Jenkinsfile no seu repositório Git para definir estas etapas. As configurações específicas de build e deploy podem ser ajustadas conforme o seu ambiente e necessidades.
+
+Utilizar um pipeline Jenkins simplifica e automatiza o processo de entrega, garantindo que as atualizações sejam facilmente e consistentemente aplicadas ao ambiente de desenvolvimento ou produção.
 
 ## Stress Test
 
